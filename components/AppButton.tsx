@@ -26,21 +26,17 @@ export default function AppButton({ title, icon, theme, onPress }: Props) {
           <Ionicons
             name={icon}
             size={22}
-<<<<<<< HEAD
+
             color={COLORS.textLight}
-=======
-            color={COLORS.textOnPrimary}
->>>>>>> c5145650ec1c47b81eaa3ee201e4798dfc4cc05e
+
+
             style={styles.icon}
           />
           <Text
             style={[
               styles.label,
-<<<<<<< HEAD
               { color: COLORS.textLight, fontWeight: '700' },
-=======
-              { color: COLORS.textOnPrimary, fontWeight: '700' },
->>>>>>> c5145650ec1c47b81eaa3ee201e4798dfc4cc05e
+
             ]}
           >
             {title}

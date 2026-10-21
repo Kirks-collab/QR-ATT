@@ -1,10 +1,7 @@
+
 import { supabase } from './supabase';
 
-<<<<<<< HEAD
 export type Role = 'student' | 'teacher' | 'admin';
-=======
-export type Role = 'student' | 'teacher';
->>>>>>> c5145650ec1c47b81eaa3ee201e4798dfc4cc05e
 
 export type Profile = {
   id: string;
@@ -23,6 +20,7 @@ export async function getProfile(
     .maybeSingle();
 
   if (error || !data) {
+    console.error('Failed to get profile:', error?.message);
     return null;
   }
 
@@ -31,17 +29,12 @@ export async function getProfile(
 
 export async function updateProfile(
   userId: string,
-  updates: {
-    full_name?: string;
-    role?: Role;
-  }
+  updates: { full_name?: string; role?: Role }
 ): Promise<{ error: string | null }> {
   const { error } = await supabase
     .from('profiles')
     .update(updates)
     .eq('id', userId);
 
-  return {
-    error: error?.message ?? null,
-  };
+  return { error: error?.message ?? null };
 }
