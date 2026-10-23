@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
+import { useTheme } from '@/context/ThemeContext';
 import {
   ActivityIndicator,
   Animated,
@@ -24,6 +24,7 @@ import { COLORS } from '@/constants/colors';
 import { signIn } from '@/lib/auth';
 
 export default function LoginScreen() {
+  const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
@@ -177,7 +178,15 @@ export default function LoginScreen() {
   // ============================================================
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+   <View
+  style={[
+    styles.container,
+    {
+      paddingTop: insets.top,
+      backgroundColor: colors.background,
+    },
+  ]}
+>
       <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

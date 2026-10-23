@@ -1,20 +1,28 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-import { COLORS } from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function TabLayout() {
+  const { colors } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: COLORS.primary,
-        headerStyle: { backgroundColor: COLORS.background },
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: colors.background,
+        },
         headerShadowVisible: false,
-        headerTintColor: COLORS.textPrimary,
+        headerTintColor: colors.textPrimary,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          backgroundColor: COLORS.card,
-          borderTopColor: COLORS.border,
+          backgroundColor: colors.card,
+          borderTopColor: colors.border,
           borderTopWidth: 1,
+        },
+        sceneStyle: {
+          backgroundColor: colors.background,
         },
       }}
     >
@@ -31,6 +39,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="scan"
         options={{
@@ -44,6 +53,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="history"
         options={{
@@ -57,6 +67,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
@@ -70,6 +81,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="teacher"
         options={{
@@ -77,6 +89,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'school' : 'school-outline'}
+              color={color}
+              size={24}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? 'settings' : 'settings-outline'}
               color={color}
               size={24}
             />

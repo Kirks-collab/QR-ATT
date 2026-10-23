@@ -1,6 +1,8 @@
+
 import { router } from 'expo-router';
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -8,134 +10,283 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS } from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Index() {
+  const { colors, isDark } = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.brand}>QR ATTENDANCE</Text>
-          <Text style={styles.developer}>Developed by Kirk Selwyn Bahena</Text>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: colors.background },
+      ]}
+    >
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Welcome */}
+        <View style={styles.header}>
+          <View style={styles.welcomeText}>
+            <Text
+              style={[
+                styles.greeting,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Welcome back!
+            </Text>
+
+            <Text
+              style={[
+                styles.title,
+                { color: colors.textPrimary },
+              ]}
+            >
+              QR Attendance
+            </Text>
+
+            <Text
+              style={[
+                styles.subtitle,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Developed by Kirk Selwyn Bahena.
+            </Text>
+          </View>
+
+          <View
+            style={[
+              styles.headerIcon,
+              { backgroundColor: colors.card },
+            ]}
+          >
+            <Ionicons
+              name={isDark ? 'moon' : 'sunny'}
+              size={28}
+              color={colors.primary}
+            />
+          </View>
         </View>
 
-        <Pressable
-          style={styles.profileButton}
-          onPress={() => router.push('/profile')}
-        >
-          <Ionicons
-            name="person-outline"
-            size={21}
-            color={COLORS.textPrimary}
-          />
-        </Pressable>
-      </View>
-
-      {/* Main Content */}
-      <View style={styles.content}>
-        <View style={styles.welcomeBadge}>
-          <Ionicons
-            name="school-outline"
-            size={16}
-            color={COLORS.primary}
-          />
-          <Text style={styles.badgeText}>SCHOOL EVENT SYSTEM</Text>
-        </View>
-
-        <Text style={styles.mainTitle}>
-          School Event{'\n'}
-          <Text style={styles.titleAccent}>Attendance</Text>
-        </Text>
-
-        <Text style={styles.subtitle}>
-          Scan QR codes quickly and securely to record your
-          attendance during school activities.
-        </Text>
-
-        {/* Scan Card */}
-        <Pressable
-          style={({ pressed }) => [
-            styles.scanCard,
-            pressed && styles.cardPressed,
+        {/* Attendance Summary */}
+        <Text
+          style={[
+            styles.sectionTitle,
+            { color: colors.textPrimary },
           ]}
-          onPress={() => router.push('/scan')}
         >
-          <View style={styles.scanIconContainer}>
+          Attendance Overview
+        </Text>
+
+        <View style={styles.statsContainer}>
+          <View
+            style={[
+              styles.statCard,
+              {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.statIcon,
+                { backgroundColor: isDark ? '#263B32' : '#E5F3E8' },
+              ]}
+            >
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={25}
+                color={isDark ? '#86D6A0' : '#3F7658'}
+              />
+            </View>
+
+            <Text
+              style={[
+                styles.statNumber,
+                { color: colors.textPrimary },
+              ]}
+            >
+              --
+            </Text>
+
+            <Text
+              style={[
+                styles.statLabel,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Attendance Records
+            </Text>
+          </View>
+
+          <View
+            style={[
+              styles.statCard,
+              {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.statIcon,
+                { backgroundColor: isDark ? '#3A3023' : '#F5EBD9' },
+              ]}
+            >
+              <Ionicons
+                name="calendar-outline"
+                size={25}
+                color={colors.primary}
+              />
+            </View>
+
+            <Text
+              style={[
+                styles.statNumber,
+                { color: colors.textPrimary },
+              ]}
+            >
+              --
+            </Text>
+
+            <Text
+              style={[
+                styles.statLabel,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Available Events
+            </Text>
+          </View>
+        </View>
+
+        {/* Quick Actions */}
+        <Text
+          style={[
+            styles.sectionTitle,
+            { color: colors.textPrimary },
+          ]}
+        >
+          Quick Actions
+        </Text>
+
+        <Pressable
+          onPress={() => router.push('/scan')}
+          style={({ pressed }) => [
+            styles.actionCard,
+            {
+              backgroundColor: colors.card,
+              borderColor: colors.border,
+              opacity: pressed ? 0.75 : 1,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.actionIcon,
+              { backgroundColor: colors.primary },
+            ]}
+          >
             <Ionicons
               name="qr-code-outline"
-              size={38}
-              color="#FFFFFF"
+              size={26}
+              color={colors.textLight}
             />
           </View>
 
-          <View style={styles.scanTextContainer}>
-            <Text style={styles.scanTitle}>Scan QR Code</Text>
-            <Text style={styles.scanDescription}>
-              Record your attendance
+          <View style={styles.actionText}>
+            <Text
+              style={[
+                styles.actionTitle,
+                { color: colors.textPrimary },
+              ]}
+            >
+              Scan QR Code
+            </Text>
+
+            <Text
+              style={[
+                styles.actionDescription,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Record your attendance at an event.
             </Text>
           </View>
 
           <Ionicons
-            name="arrow-forward"
+            name="chevron-forward"
             size={22}
-            color="#FFFFFF"
+            color={colors.textSecondary}
           />
         </Pressable>
 
-        {/* Secondary Actions */}
-        <View style={styles.actionRow}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionCard,
-              pressed && styles.cardPressed,
+        <Pressable
+          onPress={() => router.push('/history')}
+          style={({ pressed }) => [
+            styles.actionCard,
+            {
+              backgroundColor: colors.card,
+              borderColor: colors.border,
+              opacity: pressed ? 0.75 : 1,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.actionIcon,
+              { backgroundColor: isDark ? '#374151' : '#E8EDF5' },
             ]}
-            onPress={() => router.push('/history')}
           >
-            <View style={styles.actionIcon}>
-              <Ionicons
-                name="time-outline"
-                size={24}
-                color={COLORS.primary}
-              />
-            </View>
+            <Ionicons
+              name="time-outline"
+              size={26}
+              color={colors.primary}
+            />
+          </View>
 
-            <Text style={styles.actionTitle}>History</Text>
-            <Text style={styles.actionSubtitle}>
-              View attendance
+          <View style={styles.actionText}>
+            <Text
+              style={[
+                styles.actionTitle,
+                { color: colors.textPrimary },
+              ]}
+            >
+              Attendance History
             </Text>
-          </Pressable>
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionCard,
-              pressed && styles.cardPressed,
-            ]}
-            onPress={() => router.push('/profile')}
-          >
-            <View style={styles.actionIcon}>
-              <Ionicons
-                name="person-outline"
-                size={24}
-                color={COLORS.primary}
-              />
-            </View>
-
-            <Text style={styles.actionTitle}>Profile</Text>
-            <Text style={styles.actionSubtitle}>
-              Account details
+            <Text
+              style={[
+                styles.actionDescription,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Review your previous attendance records.
             </Text>
-          </Pressable>
-        </View>
-      </View>
+          </View>
 
-      {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.footerLine} />
-        <Text style={styles.footerText}>
-          QR Attendance • School Activity System
+          <Ionicons
+            name="chevron-forward"
+            size={22}
+            color={colors.textSecondary}
+          />
+        </Pressable>
+
+        {/* Footer */}
+        <Text
+          style={[
+            styles.footer,
+            { color: colors.textSecondary },
+          ]}
+        >
+          QR Attendance System
         </Text>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -143,205 +294,107 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
-
+  content: {
+    padding: 20,
+    paddingBottom: 32,
+  },
   header: {
-    paddingHorizontal: 24,
-    paddingTop: 18,
-    paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 12,
+    marginBottom: 30,
   },
-
-  brand: {
-    fontSize: 16,
-    fontWeight: '800',
-    letterSpacing: 2,
-    color: COLORS.textPrimary,
-  },
-
-  developer: {
-    marginTop: 4,
-    fontSize: 11,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.3,
-  },
-
-  profileButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: '#D9DEE7',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  content: {
+  welcomeText: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 45,
+    paddingRight: 12,
   },
-
-  welcomeBadge: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 7,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 20,
-    backgroundColor: '#EAF0F8',
-    marginBottom: 18,
+  greeting: {
+    fontSize: 14,
+    marginBottom: 6,
   },
-
-  badgeText: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1,
-    color: COLORS.primary,
+  title: {
+    fontSize: 27,
+    fontWeight: '700',
   },
-
-  mainTitle: {
-    fontSize: 38,
-    lineHeight: 43,
-    fontWeight: '800',
-    color: COLORS.textPrimary,
-    letterSpacing: -1,
-  },
-
-  titleAccent: {
-    color: COLORS.primary,
-  },
-
   subtitle: {
-    marginTop: 14,
-    maxWidth: 340,
-    fontSize: 15,
-    lineHeight: 23,
-    color: COLORS.textSecondary,
+    fontSize: 14,
+    marginTop: 8,
+    lineHeight: 20,
   },
-
-  scanCard: {
-    marginTop: 32,
-    minHeight: 105,
-    borderRadius: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
-    backgroundColor: COLORS.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-    elevation: 5,
-  },
-
-  scanIconContainer: {
-    width: 66,
-    height: 66,
-    borderRadius: 15,
-    backgroundColor: 'rgba(255,255,255,0.16)',
+  headerIcon: {
+    width: 54,
+    height: 54,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  scanTextContainer: {
-    flex: 1,
-    marginLeft: 15,
-  },
-
-  scanTitle: {
+  sectionTitle: {
     fontSize: 18,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    marginBottom: 4,
+    fontWeight: '700',
+    marginBottom: 14,
   },
-
-  scanDescription: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.78)',
-  },
-
-  actionRow: {
+  statsContainer: {
     flexDirection: 'row',
-    gap: 14,
-    marginTop: 16,
+    gap: 12,
+    marginBottom: 30,
   },
-
-  actionCard: {
+  statCard: {
     flex: 1,
-    minHeight: 125,
-    padding: 16,
-    borderRadius: 17,
-    backgroundColor: '#FFFFFF',
+    minHeight: 145,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E1E5EB',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
+    padding: 15,
   },
-
-  actionIcon: {
+  statIcon: {
     width: 44,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#EDF2F8',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
   },
-
+  statNumber: {
+    fontSize: 25,
+    fontWeight: '700',
+  },
+  statLabel: {
+    fontSize: 12,
+    marginTop: 5,
+    lineHeight: 17,
+  },
+  actionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 12,
+    gap: 12,
+  },
+  actionIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionText: {
+    flex: 1,
+  },
   actionTitle: {
     fontSize: 15,
-    fontWeight: '800',
-    color: COLORS.textPrimary,
+    fontWeight: '600',
   },
-
-  actionSubtitle: {
-    marginTop: 3,
-    fontSize: 11,
-    color: COLORS.textSecondary,
+  actionDescription: {
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 5,
   },
-
-  cardPressed: {
-    opacity: 0.82,
-    transform: [{ scale: 0.98 }],
-  },
-
   footer: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingBottom: 18,
-  },
-
-  footerLine: {
-    width: 45,
-    height: 3,
-    borderRadius: 3,
-    backgroundColor: COLORS.primary,
-    marginBottom: 9,
-    opacity: 0.7,
-  },
-
-  footerText: {
-    fontSize: 10,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.4,
+    textAlign: 'center',
+    fontSize: 12,
+    marginTop: 24,
   },
 });
-
